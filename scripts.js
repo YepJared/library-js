@@ -1,4 +1,4 @@
-const newBookButton = document.querySelector("#add-book");
+const addBookButton = document.querySelector("#add-book");
 const container = document.querySelector(".container");
 const myLibrary = [];
 
@@ -7,23 +7,47 @@ function Book(title, author, pages, isbn) {
     this.author = author;
     this.pages = pages;
     this.isbn = isbn;
-    this.index = null;
+}
+
+function displayLibrary() {
+    container.replaceChildren();
+    myLibrary.forEach((book, index) => {
+        const card = createNewCard(book);
+        card.id = index;
+        container.appendChild(card);
+    });
+}
+
+function removeBookFromLibrary(index) {
+    myLibrary.splice(index, 1);
+    displayLibrary();
+}
+
+function addRemoveButton() {
+    const removeBookButton = document.createElement("button");
+    removeBookButton.id = "remove-book";
+    removeBookButton.textContent = "Remove";
+    removeBookButton.addEventListener("click", (event) => {
+        const parentCard = event.target.parentNode;
+        removeBookFromLibrary(parentCard.id);
+    });
+    return removeBookButton;
 }
 
 function addCardDetail(key, content) {
     const item = document.createElement("div");
     item.classList.add("item");
 
-    const key_ele = document.createElement("p");
-    key_ele.classList.add("key");
-    key_ele.textContent = key;
+    const keyEle = document.createElement("p");
+    keyEle.classList.add("key");
+    keyEle.textContent = key;
 
-    const content_ele = document.createElement("p");
-    content_ele.classList.add("content");
-    content_ele.textContent = content;
+    const contentEle = document.createElement("p");
+    contentEle.classList.add("content");
+    contentEle.textContent = content;
 
-    item.appendChild(key_ele);
-    item.appendChild(content_ele);
+    item.appendChild(keyEle);
+    item.appendChild(contentEle);
     return item
 }
 
@@ -34,20 +58,12 @@ function createNewCard(book) {
     card.appendChild(addCardDetail("Author:", book.author));
     card.appendChild(addCardDetail("Pages:", book.pages));
     card.appendChild(addCardDetail("ISBN:", book.isbn));
+    card.appendChild(addRemoveButton());
     return card;
-}
-
-function displayLibrary() {
-    myLibrary.forEach((book, index) => {
-        book.index = index;
-        const card = createNewCard(book);
-        container.appendChild(card);
-    });
 }
 
 function addBookToLibrary(book) {
     myLibrary.push(book);
-    container.replaceChildren();
     displayLibrary();
 }
 
@@ -67,7 +83,7 @@ const book2 = new Book(
     "978-0-06-228275-0"
 );
 
-newBookButton.addEventListener("click", () => {
+addBookButton.addEventListener("click", () => {
     addBookToLibrary(structuredClone(book2));
 });
 
