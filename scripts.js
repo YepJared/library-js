@@ -1,11 +1,13 @@
 const newBookButton = document.querySelector("#add-book");
 const container = document.querySelector(".container");
+const myLibrary = [];
 
 function Book(title, author, pages, isbn) {
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.isbn = isbn;
+    this.index = null;
 }
 
 function addCardDetail(key, content) {
@@ -35,12 +37,30 @@ function createNewCard(book) {
     return card;
 }
 
-function addBookToLibrary(book) {
-    const card = createNewCard(book);
-    container.appendChild(card);
+function displayLibrary() {
+    myLibrary.forEach((book, index) => {
+        book.index = index;
+        const card = createNewCard(book);
+        container.appendChild(card);
+    });
 }
 
-const book = new Book(
+function addBookToLibrary(book) {
+    myLibrary.push(book);
+    container.replaceChildren();
+    displayLibrary();
+}
+
+const book1 = new Book(
+    "Cracking the Coding Interview",
+    "Gayle Laakmann McDowell",
+    696,
+    "978-0-9847828-5-7"
+);
+
+addBookToLibrary(book1);
+
+const book2 = new Book(
     "The Big Bad Book of Botany",
     "Michael Largo",
     398,
@@ -48,6 +68,6 @@ const book = new Book(
 );
 
 newBookButton.addEventListener("click", () => {
-    addBookToLibrary(book);
+    addBookToLibrary(structuredClone(book2));
 });
 
