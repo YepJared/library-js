@@ -53,8 +53,9 @@ body {
 .container {
     border: 2px solid gray;
     display: grid;
-    grid-template-columns: repeat(5, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     padding: 8px;
+    gap: 8px;
 }
 
 .card {
