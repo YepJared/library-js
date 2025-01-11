@@ -2,11 +2,12 @@ const addBookButton = document.querySelector("#add-book");
 const container = document.querySelector(".container");
 const myLibrary = [];
 
-function Book(title, author, pages, isbn) {
+function Book(title, author, pages, isbn, status) {
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.isbn = isbn;
+    this.readStatus = status;
 }
 
 function displayLibrary() {
@@ -16,6 +17,15 @@ function displayLibrary() {
         card.id = index;
         container.appendChild(card);
     });
+}
+
+function findParentCard(node) {
+    while (node.parentNode) {
+        node = node.parentNode;
+        if (node.classList.contains("card")) {
+            return node;
+        }
+    }
 }
 
 function removeBookFromLibrary(index) {
@@ -28,37 +38,78 @@ function addRemoveButton() {
     removeBookButton.id = "remove-book";
     removeBookButton.textContent = "Remove";
     removeBookButton.addEventListener("click", (event) => {
-        const parentCard = event.target.parentNode;
+        const parentCard = findParentCard(event.target);
         removeBookFromLibrary(parentCard.id);
     });
     return removeBookButton;
 }
 
-function addCardDetail(key, content) {
+function createItem() {
     const item = document.createElement("div");
     item.classList.add("item");
+    return item;
+}
 
+function createKey(key) {
     const keyEle = document.createElement("p");
     keyEle.classList.add("key");
     keyEle.textContent = key;
+    return keyEle;
+}
+
+function addCardDetail(key, content) {
+    const item = createItem();
+
+    const keyEle = createKey(key);
 
     const contentEle = document.createElement("p");
     contentEle.classList.add("content");
     contentEle.textContent = content;
 
-    item.appendChild(keyEle);
-    item.appendChild(contentEle);
-    return item
+    item.append(keyEle, contentEle);
+    return item;
+}
+
+function createStatusToggle(status) {
+    const label = document.createElement("label");
+    label.classList.add("switch");
+
+    const input = document.createElement("input");
+    input.setAttribute("type", "checkbox");
+    input.checked = status;
+    input.addEventListener("change", (event) => {
+        const parent = findParentCard(event.target);
+        const book = myLibrary[parent.id];
+        book.readStatus = !book.readStatus;
+    });
+
+    const slider = document.createElement("span");
+    slider.classList.add("slider");
+
+    label.append(input, slider);
+    return label;
+}
+
+function addReadStatus(status) {
+    const item = createItem();
+    const keyEle = createKey("Read:");
+    const readStatusToggle = createStatusToggle(status);
+
+    item.append(keyEle, readStatusToggle);
+    return item;
 }
 
 function createNewCard(book) {
     const card = document.createElement("div");
     card.classList.add("card");
-    card.appendChild(addCardDetail("Title:", book.title));
-    card.appendChild(addCardDetail("Author:", book.author));
-    card.appendChild(addCardDetail("Pages:", book.pages));
-    card.appendChild(addCardDetail("ISBN:", book.isbn));
-    card.appendChild(addRemoveButton());
+    card.append(
+        addCardDetail("Title:", book.title),
+        addCardDetail("Author:", book.author),
+        addCardDetail("Pages:", book.pages),
+        addCardDetail("ISBN:", book.isbn),
+        addReadStatus(book.readStatus),
+        addRemoveButton()
+    )
     return card;
 }
 
@@ -71,7 +122,8 @@ const book1 = new Book(
     "Cracking the Coding Interview",
     "Gayle Laakmann McDowell",
     696,
-    "978-0-9847828-5-7"
+    "978-0-9847828-5-7",
+    true
 );
 
 addBookToLibrary(book1);
@@ -80,7 +132,8 @@ const book2 = new Book(
     "The Big Bad Book of Botany",
     "Michael Largo",
     398,
-    "978-0-06-228275-0"
+    "978-0-06-228275-0",
+    false
 );
 
 addBookButton.addEventListener("click", () => {
