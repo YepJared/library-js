@@ -1,5 +1,6 @@
 const addBookButton = document.querySelector("#add-book");
 const container = document.querySelector(".container");
+const dialog = document.querySelector(".new-book");
 const myLibrary = [];
 
 function Book(title, author, pages, isbn, status) {
@@ -126,8 +127,6 @@ const book1 = new Book(
     true
 );
 
-addBookToLibrary(book1);
-
 const book2 = new Book(
     "The Big Bad Book of Botany",
     "Michael Largo",
@@ -136,7 +135,10 @@ const book2 = new Book(
     false
 );
 
+addBookToLibrary(book1);
+addBookToLibrary(book2);
+
 addBookButton.addEventListener("click", () => {
-    addBookToLibrary(structuredClone(book2));
+    dialog.showModal();
 });
 

@@ -19,10 +19,6 @@ input, button, textarea, select {
     font: inherit;
 }
 
-input {
-    appearance: none;
-}
-
 p, h1, h2, h3, h4, h5, h6 {
     overflow-wrap: break-word;
 }
@@ -89,15 +85,15 @@ body {
     width: 40px;
     height: 18px;
     align-self: center;
-  }
+}
   
-  .switch input {
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  .slider {
+}
+
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -108,9 +104,9 @@ body {
     -webkit-transition: .3s;
     transition: .3s;
     border-radius: 18px;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
     position: absolute;
     content: "";
     height: 12px;
@@ -121,19 +117,61 @@ body {
     -webkit-transition: .4s;
     transition: .4s;
     border-radius: 50%;
-  }
-  
-  input:checked + .slider {
+}
+
+input:checked + .slider {
     background-color: green;
-  }
-  
-  input:focus + .slider {
+}
+
+input:focus + .slider {
     box-shadow: 0 0 1px green;
-  }
-  
-  input:checked + .slider:before {
+}
+
+input:checked + .slider:before {
     -webkit-transform: translateX(20px);
     -ms-transform: translateX(20px);
     transform: translateX(20px);
-  }
-  
+}
+
+dialog {
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+    position: absolute;
+    width: 400px;
+    margin-left: calc(50% - 200px);
+    margin-top: calc(50% - 125px);
+}
+
+::backdrop {
+    background-color: grey;
+    opacity: 0.5;
+}
+
+form {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.book-inputs {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 8px;
+    align-items: center;
+    justify-content: end;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    padding: 2px 4px;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    align-items: center;
+    justify-content: start;
+    gap: 8px;
+}
