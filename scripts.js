@@ -1,6 +1,8 @@
 const addBookButton = document.querySelector("#add-book");
 const container = document.querySelector(".container");
 const dialog = document.querySelector(".new-book");
+const form = document.querySelector("form");
+const formCloseButton = document.querySelector("#close");
 const myLibrary = [];
 
 function Book(title, author, pages, isbn, status) {
@@ -137,6 +139,26 @@ const book2 = new Book(
 
 addBookToLibrary(book1);
 addBookToLibrary(book2);
+
+form.onsubmit = function(event) {
+    const bookForm = new FormData(form);
+    const newBook = new Book(
+        bookForm.get("title"),
+        bookForm.get("author"),
+        bookForm.get("pages"),
+        bookForm.get("isbn"),
+        bookForm.get("read") === "yes" ? true: false
+    );
+    addBookToLibrary(newBook);
+    dialog.close();
+    form.reset();
+    event.preventDefault();
+};
+
+formCloseButton.addEventListener("click", () => {
+    dialog.close();
+    form.reset();
+});
 
 addBookButton.addEventListener("click", () => {
     dialog.showModal();
