@@ -39,7 +39,7 @@ function removeBookFromLibrary(index) {
 function addRemoveButton() {
     const removeBookButton = document.createElement("button");
     removeBookButton.id = "remove-book";
-    removeBookButton.textContent = "Remove";
+    removeBookButton.textContent = "-Remove Book";
     removeBookButton.addEventListener("click", (event) => {
         const parentCard = findParentCard(event.target);
         removeBookFromLibrary(parentCard.id);
