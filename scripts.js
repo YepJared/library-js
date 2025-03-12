@@ -5,12 +5,44 @@ const form = document.querySelector("form");
 const formCloseButton = document.querySelector("#close");
 const myLibrary = [];
 
-function Book(title, author, pages, isbn, status) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.isbn = isbn;
-    this.readStatus = status;
+class Book {
+    #title;
+    #author;
+    #pages;
+    #isbn;
+    #readStatus;
+
+    constructor(title, author, pages, isbn, status) {
+        this.#title = title;
+        this.#author = author;
+        this.#pages = pages;
+        this.#isbn = isbn;
+        this.#readStatus = status;
+    }
+
+    get title() {
+        return this.#title;
+    }
+
+    get author() {
+        return this.#author;
+    }
+
+    get pages() {
+        return this.#pages;
+    }
+
+    get isbn() {
+        return this.#isbn;
+    }
+
+    get readStatus() {
+        return this.#readStatus;
+    }
+
+    toggleReadStatus() {
+        this.#readStatus = !this.#readStatus;
+    }
 }
 
 function displayLibrary() {
@@ -83,7 +115,7 @@ function createStatusToggle(status) {
     input.addEventListener("change", (event) => {
         const parent = findParentCard(event.target);
         const book = myLibrary[parent.id];
-        book.readStatus = !book.readStatus;
+        book.toggleReadStatus();
     });
 
     const slider = document.createElement("span");
